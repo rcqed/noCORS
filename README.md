@@ -18,5 +18,5 @@
 
 ---
 
-- 访问链接(不使用二级http代理服务)：https://192.168.44.3:6006/?url=https://test.com/test.jpg
-- 访问链接(使用二级http代理服务)：https://192.168.44.3:6006/?proxy=1&url=https://test.com/test.jpg
+- 访问链接(不使用二级http代理服务)：https://127.0.0.1:6006/?url=https://test.com/test.jpg
+- 访问链接(使用二级http代理服务)：https://127.0.0.1:6006/?proxy=1&url=https://test.com/test.jpg
