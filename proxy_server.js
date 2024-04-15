@@ -9,14 +9,14 @@ const proxyServer = 'http://192.168.44.2:10811';
 
 // 允许的 Referer 列表
 const allowedReferers = [
-  'https://www.test.com/',
-  'http://anotherwebsite.com/'
+  'https://www.test1.com',
+  'https://www.test2.com'
 ];
 
 // 创建一个 HTTP 服务器
 http.createServer((req, res) => {
   // 设置跨域头
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Origin', 'https://www.test1.com, https://www.test2.com');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
@@ -29,6 +29,13 @@ http.createServer((req, res) => {
   
   // 检查是否使用代理
   const useProxy = query.proxy === '1';
+
+  // 检查Referer是否为空
+  if (!referer) {
+    res.writeHead(403);
+    res.end('Forbidden');
+    return;
+  }
 
   // 检查 Referer 是否在允许的 Referer 列表中
   if (referer && !allowedReferers.some(allowedReferer => referer.startsWith(allowedReferer))) {
