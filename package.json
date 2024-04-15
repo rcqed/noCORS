@@ -1,0 +1,12 @@
+{
+  "name": "proxy-server",
+  "version": "1.0.0",
+  "description": "A simple Node.js proxy server",
+  "main": "proxy_server.js",
+  "scripts": {
+    "start": "node proxy_server.js"
+  },
+  "dependencies": {
+    "request": "^2.88.2"
+  }
+}
