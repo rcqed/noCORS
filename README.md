@@ -4,25 +4,19 @@
 
 同时支持二次http代理，避免资源无法访问~
 
+支持防盗链~
 
-
-- **如果公开访问，可以用proxy_server.js**
+---
 
 1. 克隆代码 git clone git@github.com:rcqed/noCORS.git
 2. 修改proxyServer为http代理服务器（如不用二次http代理也可以不改）
 3. 修改listen的6006和ip地址为自己的~
-4. cd到目录，npm install
-5. npm start
-6. 愉快使用吧~
+4. 修改allowedReferers为允许的域名~
+5. cd到目录，npm install
+6. npm start
+7. 愉快使用吧~
 
+---
 
-
-- **如果需要防盗链，可以用proxy_server(valid_referers).js，改名为proxy_server**
-
-1. 修改allowedReferers为允许的域名~
-2. 和上面一样，愉快使用吧~
-
-
-
-- 访问链接(不使用二级http代理服务)：https://192.168.44.3:6006/?url=https://test.com/test.jpg 或 https://192.168.44.3:6006/?proxy=0&url=https://test.com/test.jpg
+- 访问链接(不使用二级http代理服务)：https://192.168.44.3:6006/?url=https://test.com/test.jpg
 - 访问链接(使用二级http代理服务)：https://192.168.44.3:6006/?proxy=1&url=https://test.com/test.jpg
