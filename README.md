@@ -38,3 +38,6 @@
   }
 ```
 
+安全考虑，你可以使用proxy_server (localhost ban).js替换原本的proxy_server.js
+这个禁用了对本地localhost的代理请求
+
