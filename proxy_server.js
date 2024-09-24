@@ -3,46 +3,46 @@ const url = require('url');
 const request = require('request');
 const dns = require('dns');
 
-// HTTP´úÀí·şÎñÆ÷µÄµØÖ·
+// HTTPä»£ç†æœåŠ¡å™¨çš„åœ°å€
 const proxyServer = 'http://192.168.44.3:20171';
 
-// ÔÊĞíµÄ Referer ÁĞ±í
+// å…è®¸çš„ Referer åˆ—è¡¨
 const allowedReferers = [
-  'https://www.00083.cn',
-  'https://www.atby.cn'
+  'https://www.test1.com',
+  'https://www.test2.com'
 ];
 
-// ¿ØÖÆÊÇ·ñ¼ì²é Referer µÄ³£Á¿,ÊäÈëY»òN
+// æ§åˆ¶æ˜¯å¦æ£€æŸ¥ Referer çš„å¸¸é‡,è¾“å…¥Yæˆ–N
 const refererCheck = 'Y';
 
-// ´´½¨Ò»¸ö HTTP ·şÎñÆ÷
+// åˆ›å»ºä¸€ä¸ª HTTP æœåŠ¡å™¨
 http.createServer((req, res) => {
 
-  // »ñÈ¡ÇëÇóÍ·ÖĞµÄ Origin
+  // è·å–è¯·æ±‚å¤´ä¸­çš„ Origin
   const origin = req.headers.origin;
 
-  // ÉèÖÃ CORS Í·£¬¸ù¾İÇëÇóµÄ Origin ¼ì²éÊÇ·ñÔÊĞí¿çÓò
+  // è®¾ç½® CORS å¤´ï¼Œæ ¹æ®è¯·æ±‚çš„ Origin æ£€æŸ¥æ˜¯å¦å…è®¸è·¨åŸŸ
   if (origin && allowedReferers.some(allowedReferer => origin.startsWith(allowedReferer))) {
     res.setHeader('Access-Control-Allow-Origin', origin);
   } else {
-    res.setHeader('Access-Control-Allow-Origin', 'null'); // ½ûÖ¹²»ÔÊĞíµÄ Origin
+    res.setHeader('Access-Control-Allow-Origin', 'null'); // ç¦æ­¢ä¸å…è®¸çš„ Origin
   }
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  // ½âÎöÇëÇóÖĞµÄ URL ºÍ²ÎÊı
+  // è§£æè¯·æ±‚ä¸­çš„ URL å’Œå‚æ•°
   const { pathname, query } = url.parse(req.url, true);
-  // »ñÈ¡Òª´úÀíµÄ URL 
+  // è·å–è¦ä»£ç†çš„ URL 
   const proxyUrl = query.url;
-  // »ñÈ¡ÇëÇóÍ·ÖĞµÄ Referer
+  // è·å–è¯·æ±‚å¤´ä¸­çš„ Referer
   const referer = req.headers.referer;
   
-  // ¼ì²éÊÇ·ñÊ¹ÓÃ´úÀí
+  // æ£€æŸ¥æ˜¯å¦ä½¿ç”¨ä»£ç†
   const useProxy = query.proxy === '1';
 
-  // ¸ù¾İ refererCheck µÄÖµ¾ö¶¨ÊÇ·ñ¼ì²é Referer
+  // æ ¹æ® refererCheck çš„å€¼å†³å®šæ˜¯å¦æ£€æŸ¥ Referer
   if (refererCheck === 'Y') {
-    // ¼ì²éRefererÊÇ·ñÎª¿Õ
+    // æ£€æŸ¥Refereræ˜¯å¦ä¸ºç©º
     if (!referer) {
       res.writeHead(403);
       res.end('Forbidden');
@@ -50,16 +50,16 @@ http.createServer((req, res) => {
     }
   }
 
-  // ¼ì²é Referer ÊÇ·ñÔÚÔÊĞíµÄ Referer ÁĞ±íÖĞ
+  // æ£€æŸ¥ Referer æ˜¯å¦åœ¨å…è®¸çš„ Referer åˆ—è¡¨ä¸­
   if (referer && !allowedReferers.some(allowedReferer => referer.startsWith(allowedReferer))) {
     res.writeHead(403);
     res.end('Forbidden');
     return;
   }
 
-  // ½âÎöÄ¿±êURLµÄÖ÷»úÃû
+  // è§£æç›®æ ‡URLçš„ä¸»æœºå
   const targetHost = url.parse(proxyUrl).hostname;
-  // Í¨¹ıdns.lookup½âÎöÖ÷»úÃûµ½IPµØÖ·
+  // é€šè¿‡dns.lookupè§£æä¸»æœºååˆ°IPåœ°å€
   dns.lookup(targetHost, (err, address, family) => {
     if (err) {
       console.error('DNS lookup error:', err);
@@ -68,30 +68,30 @@ http.createServer((req, res) => {
       return;
     }
 
-	// ±¾µØµØÖ·ÕıÔò±í´ïÊ½£¬·ÀÖ¹±¾µØIP±»´úÀí·ÃÎÊ
+	// æœ¬åœ°åœ°å€æ­£åˆ™è¡¨è¾¾å¼ï¼Œé˜²æ­¢æœ¬åœ°IPè¢«ä»£ç†è®¿é—®
 	const localAddressRegex = /^(localhost|127\.0\.0\.1|0\.0\.0\.0|192\.168\.\d+\.\d+|10\.\d+\.\d+\.\d+|172\.(1[6-9]|2[0-9]|3[0-1])\.\d+\.\d+)$/;
-	// ¼ì²éIPµØÖ·ÊÇ·ñÎª±¾µØIPµØÖ·
+	// æ£€æŸ¥IPåœ°å€æ˜¯å¦ä¸ºæœ¬åœ°IPåœ°å€
 	function isLocalAddress(ip) {
 	  return localAddressRegex.test(ip);
 	}
-    // ¼ì²é½âÎö³öµÄIPµØÖ·ÊÇ·ñÎª±¾µØIPµØÖ·
+    // æ£€æŸ¥è§£æå‡ºçš„IPåœ°å€æ˜¯å¦ä¸ºæœ¬åœ°IPåœ°å€
     if (isLocalAddress(address)) {
       res.writeHead(403);
       res.end('Forbidden: Local address access is not allowed');
       return;
     }
 
-    // ÉèÖÃÇëÇóÑ¡Ïî
+    // è®¾ç½®è¯·æ±‚é€‰é¡¹
     const requestOptions = {
       url: proxyUrl,
-      encoding: null // ÉèÖÃÎªnullÒÔ»ñÈ¡Ô­Ê¼µÄ¶ş½øÖÆÊı¾İ
+      encoding: null // è®¾ç½®ä¸ºnullä»¥è·å–åŸå§‹çš„äºŒè¿›åˆ¶æ•°æ®
     };
-	// ¸ù¾İ useProxy Ìõ¼şÉèÖÃ´úÀí·şÎñÆ÷
+	// æ ¹æ® useProxy æ¡ä»¶è®¾ç½®ä»£ç†æœåŠ¡å™¨
     if (useProxy) {
       requestOptions.proxy = proxyServer;
     }
 
-    // Ê¹ÓÃ request Ä£¿é·¢ÆğÇëÇó
+    // ä½¿ç”¨ request æ¨¡å—å‘èµ·è¯·æ±‚
     request(requestOptions, (error, response, body) => {
       if (error) {
         console.error('Error:', error);
@@ -100,11 +100,11 @@ http.createServer((req, res) => {
         return;
       }
 
-      // ½«ÎÄ¼şÄÚÈİ×÷ÎªÏìÓ¦·µ»Ø¸ø¿Í»§¶Ë
+      // å°†æ–‡ä»¶å†…å®¹ä½œä¸ºå“åº”è¿”å›ç»™å®¢æˆ·ç«¯
       const filename = proxyUrl.substring(proxyUrl.lastIndexOf('/') + 1);
       const contentType = response.headers['content-type'];
 
-      // ÉèÖÃÕıÈ·µÄ Content-Type
+      // è®¾ç½®æ­£ç¡®çš„ Content-Type
       res.writeHead(200, {
         'Content-Type': contentType,
         'Cache-Control': 'max-age=2592000'
