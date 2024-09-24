@@ -1,14 +1,12 @@
 {
   "name": "proxy-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple Node.js proxy server",
   "main": "proxy_server.js",
   "scripts": {
     "start": "node proxy_server.js"
   },
   "dependencies": {
-    "request": "^2.88.2",
-    "cors": "^2.8.5",
-    "dns": "^0.2.2"
+    "request": "^2.88.2"
   }
 }
